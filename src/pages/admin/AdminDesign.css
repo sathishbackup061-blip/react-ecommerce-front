@@ -1,0 +1,342 @@
+.category-create-container {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 24px 0;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.page-content {
+    padding: 20px;
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Header Card */
+.header-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: none;
+    overflow: hidden;
+    width: 100%;
+}
+
+.header-card .page-title {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    word-break: break-word;
+    color: white;
+}
+
+.header-card .page-subtitle {
+    margin: 8px 0 0 0;
+    opacity: 0.9;
+    font-size: 14px;
+    word-break: break-word;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Form Card */
+.form-card {
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.form-card .ant-card-head {
+    background: #fafafa;
+    border-bottom: 2px solid #f0f0f0;
+    border-radius: 8px 8px 0 0;
+    overflow-x: auto;
+}
+
+.form-card .ant-card-head .ant-card-title {
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-select-custom {
+    border-radius: 6px;
+    border: 1.5px solid #d9d9d9;
+    padding: 8px 12px;
+    transition: all 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.form-select-custom:hover,
+.form-select-custom:focus {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* Categories Card */
+.categories-card {
+    background: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.categories-card .ant-card-head {
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+    border-bottom: 1px solid #f0f0f0;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+}
+
+.categories-card .ant-card-head .ant-card-title {
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Table */
+.categories-table {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.categories-table .ant-table {
+    border-radius: 6px;
+    width: 100%;
+    min-width: 100%;
+}
+
+.categories-table .ant-table-wrapper {
+    overflow-x: auto;
+}
+
+.categories-table td {
+    padding: 12px !important;
+    word-break: break-word;
+    max-width: 300px;
+}
+
+.category-name {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    color: #333;
+    word-break: break-word;
+    min-width: 0;
+}
+
+.edit-input {
+    border-radius: 4px !important;
+    border: 2px solid #1890ff !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Category Card */
+.category-card {
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+.category-card-title {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    word-break: break-word;
+}
+
+/* Ant Design Overrides */
+.ant-card {
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.ant-card-body {
+
+    overflow-x: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+.ant-card-body:first-child {
+        background-color: #e4feff;
+}
+
+.ant-btn-primary {
+    background: #1890ff;
+    border-color: #1890ff;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+    background: #40a9ff;
+    border-color: #40a9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+.ant-btn-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ant-tag {
+    border-radius: 4px;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.ant-row {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ant-col {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .header-card .page-title {
+        font-size: 28px;
+    }
+
+    .categories-table td {
+        padding: 10px !important;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-card .page-title {
+        font-size: 20px;
+    }
+
+    .page-content {
+        padding: 12px;
+    }
+
+    .category-create-container {
+        padding: 12px 0;
+    }
+
+    .categories-table td {
+        padding: 8px !important;
+        max-width: 150px;
+        font-size: 12px;
+    }
+
+    .form-select-custom {
+        font-size: 14px;
+    }
+
+    .ant-btn {
+        padding: 4px 8px !important;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-card .page-title {
+        font-size: 18px;
+        gap: 6px;
+    }
+
+    .header-card .page-subtitle {
+        font-size: 12px;
+    }
+
+    .page-content {
+        padding: 8px;
+    }
+
+    .categories-table td {
+        padding: 6px !important;
+        max-width: 120px;
+        font-size: 11px;
+    }
+
+    .categories-card {
+        margin: 0 !important;
+    }
+
+    .ant-row > .ant-col {
+        width: 100% !important;
+        max-width: 100%;
+    }
+}
+
+/* Global fix */
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+

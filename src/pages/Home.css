@@ -1,0 +1,394 @@
+/* Home Page Styles */
+.home-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* ===== Hero Carousel Section ===== */
+.hero-section {
+  width: 100%;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero-carousel {
+  width: 100%;
+}
+
+.carousel-slide {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .carousel-slide {
+    height: 250px;
+  }
+}
+
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-content {
+  text-align: center;
+  color: white;
+  animation: slideInUp 0.8s ease-in-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.carousel-title {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .carousel-title {
+    font-size: 28px;
+  }
+}
+
+.carousel-description {
+  font-size: 18px;
+  margin-bottom: 25px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .carousel-description {
+    font-size: 14px;
+  }
+}
+
+.carousel-button {
+  font-size: 16px;
+  padding: 12px 40px;
+  border-radius: 25px;
+  border: none;
+}
+
+/* ===== Categories Banner ===== */
+.categories-banner {
+  background: white;
+  padding: 40px 0;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.banner-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.category-item {
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f5f5f5;
+}
+
+.category-item:hover {
+  background: #1890ff;
+  color: white;
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.category-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.category-item h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ===== New Arrivals Section ===== */
+.new-arrivals-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #1890ff;
+  margin: 0 0 10px 0;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.products-grid {
+  margin-bottom: 30px;
+}
+
+.product-col {
+  display: flex;
+  justify-content: center;
+}
+
+.view-all-section {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.view-all-button {
+  padding: 12px 50px;
+  font-size: 16px;
+  border-radius: 25px;
+  height: auto;
+}
+
+/* ===== Features Section ===== */
+.features-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 60px 20px;
+  margin: 40px 0;
+}
+
+.feature-card {
+  background: white;
+  padding: 30px 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.feature-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1890ff;
+  margin: 15px 0;
+}
+
+.feature-card p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ===== Newsletter Section ===== */
+.newsletter-section {
+  background: linear-gradient(135deg, #1890ff 0%, #52c41a 100%);
+  padding: 60px 20px;
+  color: white;
+  margin: 40px 0 0 0;
+}
+
+.newsletter-content {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.newsletter-content h2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.newsletter-content p {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.newsletter-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.newsletter-button {
+  padding: 12px 30px;
+  border-radius: 5px;
+  border: none;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 28px;
+  }
+
+  .banner-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+
+  .newsletter-input,
+  .newsletter-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-container {
+    grid-template-columns: 1fr;
+  }
+
+  .carousel-title {
+    font-size: 20px;
+  }
+
+  .carousel-description {
+    font-size: 12px;
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.home-page {
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* ===== Statistics Section ===== */
+.stats-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 10px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card .ant-statistic-title {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.stat-card .ant-statistic-content {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.category-section {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.header-section {
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #96efff 0%, #90ba7b 100%);
+    padding: 4px;
+} 
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stats-section {
+    padding: 30px 15px;
+  }
+
+  .stat-card .ant-statistic-content {
+    font-size: 20px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .stats-section {
+    padding: 20px 10px;
+  }
+
+  .stat-card .ant-statistic-title {
+    font-size: 12px;
+  }
+
+  .stat-card .ant-statistic-content {
+    font-size: 18px;
+  }
+}

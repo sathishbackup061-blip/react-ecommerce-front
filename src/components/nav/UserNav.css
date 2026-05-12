@@ -1,0 +1,83 @@
+/* Sidebar card */
+.userNavCard {
+  padding: 20px;
+  height: 100%;
+  background: #fff;
+}
+
+/* Header */
+.userHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.userHeader p {
+  margin: 0;
+  font-size: 12px;
+  color: gray;
+}
+
+/* Avatar */
+.avatar {
+  background: #1677ff;
+}
+
+/* Menu styling */
+.menu {
+  border: none;
+}
+
+.menu .ant-menu-item {
+  border-radius: 10px;
+  margin-bottom: 6px;
+  transition: 0.2s;
+}
+
+.menu .ant-menu-item:hover {
+  background: #f0f5ff;
+}
+
+/* Logout button */
+.logout {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Desktop */
+.desktopNav {
+  display: block;
+}
+
+.sider {
+  background: #fff !important;
+  border-right: 1px solid #eee;
+}
+
+/* Mobile */
+.mobileHeader {
+  display: none;
+  padding: 10px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .mobileHeader {
+    display: flex;
+  }
+}
