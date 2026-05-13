@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "./ProductCard.css";
-import _ from "loadsh";
+import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../../../functions/user";
 import { toast } from "react-toastify";

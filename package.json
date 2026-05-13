@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "^6.2.2",
+    "@ant-design/icons": "^6.2.3",
     "@redux-devtools/extension": "^4.0.0",
     "@stripe/react-stripe-js": "^6.3.0",
     "@stripe/stripe-js": "^9.4.0",
@@ -33,7 +33,6 @@
     "react-star-ratings": "^2.3.0",
     "react-toastify": "^11.1.0",
     "redux": "^5.0.1",
-    "redux-devtools-extension": "^2.13.9",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
