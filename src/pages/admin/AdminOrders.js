@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 
 import {
   Table,
@@ -18,52 +22,83 @@ import {
 const { Option } = Select;
 
 const AdminOrders = () => {
-  const { user } = useSelector((state) => ({
-    ...state,
-  }));
+  const { user } = useSelector(
+    (state) => ({
+      ...state,
+    })
+  );
 
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] =
+    useState([]);
 
+  const [loading, setLoading] =
+    useState(false);
+
+  // -----------------------------
   // LOAD ORDERS
+  // -----------------------------
+  const loadOrders =
+    useCallback(async () => {
+      try {
+        if (!user?.token) return;
+
+        setLoading(true);
+
+        const res =
+          await getOrders(
+            user.token
+          );
+
+        setOrders(
+          res.data || []
+        );
+      } catch (err) {
+        console.log(err);
+
+        message.error(
+          "Failed to load orders"
+        );
+      } finally {
+        setLoading(false);
+      }
+    }, [user]);
+
+  // -----------------------------
+  // EFFECT
+  // -----------------------------
   useEffect(() => {
     loadOrders();
-  }, []);
+  }, [loadOrders]);
 
-  const loadOrders = async () => {
-    try {
-      const res = await getOrders(user.token);
-
-      setOrders(res.data);
-
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  // -----------------------------
   // STATUS UPDATE
-  const handleStatusChange = async (
-    orderId,
-    value
-  ) => {
-    try {
-      await changeOrderStatus(
-        user.token,
-        orderId,
-        value
-      );
+  // -----------------------------
+  const handleStatusChange =
+    async (orderId, value) => {
+      try {
+        await changeOrderStatus(
+          user.token,
+          orderId,
+          value
+        );
 
-      message.success("Order status updated");
+        message.success(
+          "Order status updated"
+        );
 
-      loadOrders();
+        loadOrders();
+      } catch (err) {
+        console.log(err);
 
-    } catch (err) {
-      console.log(err);
+        message.error(
+          "Update failed"
+        );
+      }
+    };
 
-      message.error("Update failed");
-    }
-  };
-
-  // TABLE
+  // -----------------------------
+  // TABLE COLUMNS
+  // -----------------------------
   const columns = [
     {
       title: "Order ID",
@@ -72,14 +107,17 @@ const AdminOrders = () => {
 
     {
       title: "Customer",
+
       render: (_, order) => (
         <div>
           <div>
-            {order.user?.name}
+            {order.user?.name ||
+              "N/A"}
           </div>
 
           <small>
-            {order.user?.email}
+            {order.user?.email ||
+              "No Email"}
           </small>
         </div>
       ),
@@ -87,18 +125,25 @@ const AdminOrders = () => {
 
     {
       title: "Total",
+
       render: (_, order) => (
         <b>
-          ₹{order.totalAfterDiscount}
+          ₹
+          {order.totalAfterDiscount?.toFixed(
+            2
+          ) || "0.00"}
         </b>
       ),
     },
 
     {
       title: "Payment",
+
       render: (_, order) => (
         <Tag color="green">
-          {order.paymentIntent?.status}
+          {order
+            .paymentIntent
+            ?.status || "N/A"}
         </Tag>
       ),
     },
@@ -108,8 +153,12 @@ const AdminOrders = () => {
 
       render: (_, order) => (
         <Select
-          defaultValue={order.orderStatus}
-          style={{ width: 160 }}
+          value={
+            order.orderStatus
+          }
+          style={{
+            width: 160,
+          }}
           onChange={(value) =>
             handleStatusChange(
               order._id,
@@ -147,6 +196,7 @@ const AdminOrders = () => {
         columns={columns}
         dataSource={orders}
         rowKey="_id"
+        loading={loading}
       />
     </Card>
   );

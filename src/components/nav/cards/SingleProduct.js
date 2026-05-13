@@ -1,70 +1,128 @@
-import React, { useState , useEffect} from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Row, Col, Button, Tag, Rate, message, Tooltip, InputNumber, Divider, Tabs, Popover, Space } from "antd";
+
+import {
+  Row,
+  Col,
+  Button,
+  Tag,
+  Rate,
+  message,
+  Tooltip,
+  InputNumber,
+  Divider,
+  Tabs,
+  Popover,
+} from "antd";
+
 import {
   ShoppingCartOutlined,
   HeartOutlined,
   HeartFilled,
-  TruckOutlined,
   ArrowRightOutlined,
-  CheckCircleOutlined,
   LeftOutlined,
   RightOutlined,
   StarOutlined,
   StarFilled,
-  LoginOutlined,
 } from "@ant-design/icons";
-import "./SingleProduct.css";
-import { getProducts, productStar, getRelatedProduct } from "../../../functions/product";
-import ProductCard from "./ProductCard";
 
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import _ from "lodash";
 
-const PLACEHOLDER_IMG = "https://via.placeholder.com/400?text=No+Image";
-const PLACEHOLDER_THUMB = "https://via.placeholder.com/80?text=No+Image";
+import "./SingleProduct.css";
 
+import {
+  productStar,
+  getRelatedProduct,
+} from "../../../functions/product";
 
-const SingleProduct = ({ product, getImageUrl }) => {
+import ProductCard from "./ProductCard";
+
+const PLACEHOLDER_IMG =
+  "https://via.placeholder.com/400?text=No+Image";
+
+const PLACEHOLDER_THUMB =
+  "https://via.placeholder.com/80?text=No+Image";
+
+const { TabPane } = Tabs;
+
+const SingleProduct = ({
+  product,
+  getImageUrl,
+}) => {
   const navigate = useNavigate();
- // const user = useSelector((state) => state.user);
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [rating, setRating] = useState(0);
 
-  const [related, setRelated] = useState([]);
-    const [tootlTip, setToolTip] = useState('Click to add');
-  // const [ratingCount, setRatingCount] = useState(0);
-  // const [userRatings, setUserRatings] = useState({}); // Track which users rated
+  const dispatch = useDispatch();
 
-   const dispatch = useDispatch();
-  
-    const {user, cart } = useSelector((state) => ({ ...state }));
+  const { user } = useSelector(
+    (state) => ({
+      ...state,
+    })
+  );
 
-useEffect(() => {
-  loadRelated();
-}, [product]);
+  const [selectedImage, setSelectedImage] =
+    useState(0);
 
-const loadRelated = async () => {
-  try {
-    if (!product?._id) return;
+  const [quantity, setQuantity] =
+    useState(1);
 
-    const res = await getRelatedProduct(product._id);
-    setRelated(res.data);
-  } catch (error) {
-    console.log("RELATED ERROR", error);
-  }
-};
+  const [isWishlisted, setIsWishlisted] =
+    useState(false);
 
+  const [rating, setRating] =
+    useState(0);
 
-  // Handle early return after hooks
+  const [related, setRelated] =
+    useState([]);
+
+  const [toolTip, setToolTip] =
+    useState("Click to add");
+
+  // -----------------------------
+  // LOAD RELATED PRODUCTS
+  // -----------------------------
+  const loadRelated = useCallback(
+    async () => {
+      try {
+        if (!product?._id) return;
+
+        const res =
+          await getRelatedProduct(
+            product._id
+          );
+
+        setRelated(res.data || []);
+      } catch (error) {
+        console.log(
+          "RELATED ERROR",
+          error
+        );
+      }
+    },
+    [product]
+  );
+
+  useEffect(() => {
+    loadRelated();
+  }, [loadRelated]);
+
+  // -----------------------------
+  // SAFETY RETURN
+  // -----------------------------
   if (!product) return null;
 
-  const isLoggedIn = user && user.token;
-  const currentUserId = user?._id;
+  const isLoggedIn =
+    user && user.token;
 
-  // Destructure product properties
+  const currentUserId =
+    user?._id;
+
+  // -----------------------------
+  // PRODUCT DATA
+  // -----------------------------
   const {
     title = "",
     description = "",
@@ -75,320 +133,600 @@ const loadRelated = async () => {
     color = "N/A",
     images: productImages = [],
     category,
-    subs,
+    //subs = [],
     ratings = [],
   } = product;
 
-    const hasUserRated =
-  currentUserId &&
-  ratings.some(
-    (r) => r.postedBy?.toString() === currentUserId?.toString()
-  );
+  const hasUserRated =
+    currentUserId &&
+    ratings.some(
+      (r) =>
+        r.postedBy?.toString() ===
+        currentUserId?.toString()
+    );
 
+  const images = productImages || [];
 
-  const images = productImages;
-  const hasMultipleImages = images.length > 1;
-  const isOutOfStock = stock === 0;
+  const hasMultipleImages =
+    images.length > 1;
 
+  const isOutOfStock =
+    stock === 0;
 
+  // -----------------------------
+  // IMAGE HANDLERS
+  // -----------------------------
   const handlePrevImage = () => {
-    setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setSelectedImage((prev) =>
+      prev === 0
+        ? images.length - 1
+        : prev - 1
+    );
   };
 
   const handleNextImage = () => {
-    setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setSelectedImage((prev) =>
+      prev === images.length - 1
+        ? 0
+        : prev + 1
+    );
   };
 
+  // -----------------------------
+  // ADD TO CART
+  // -----------------------------
   const handleAddToCart = (e) => {
     e.stopPropagation();
 
     let cart = [];
 
-    if (typeof window !== "undefined") {
-      // get cart from localStorage
-      if (localStorage.getItem("cart")) {
-        cart = JSON.parse(localStorage.getItem("cart"));
+    if (
+      typeof window !== "undefined"
+    ) {
+      const existingCart =
+        localStorage.getItem(
+          "cart"
+        );
+
+      if (existingCart) {
+        cart =
+          JSON.parse(existingCart);
       }
 
-      // add product
       cart.push({
         ...product,
-        count: 1,
+        count: quantity,
       });
 
-      // remove duplicates
       cart = _.uniqBy(cart, "_id");
 
-      // save localStorage
-      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+      );
 
-      // save redux state
       dispatch({
         type: "ADD_TO_CART",
         payload: cart,
       });
-      
-      message.success("Added to cart");
-      // show tootlTip
-      setToolTip('Added');
-      console.log("Cart:", cart);
 
+      setToolTip("Added");
+
+      message.success(
+        "Added to cart"
+      );
     }
   };
 
+  // -----------------------------
+  // BUY NOW
+  // -----------------------------
+  const handleBuyNow = () => {
+    const cart = [
+      {
+        ...product,
+        count: quantity,
+      },
+    ];
 
-const handleBuyNow = () => {
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(cart)
+    );
 
-  let cart = [];
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: cart,
+    });
 
-  // existing cart
-  if (localStorage.getItem("cart")) {
-    cart = JSON.parse(localStorage.getItem("cart"));
-  }
+    message.success(
+      "Proceeding to checkout"
+    );
 
-  // clear old cart for direct buy
-  cart = [];
-
-  // add current product
-  cart.push({
-    ...product,
-    count: quantity,
-  });
-
-  // remove duplicates
-  cart = _.uniqBy(cart, "_id");
-
-  // save localStorage
-  localStorage.setItem("cart", JSON.stringify(cart));
-
-  // save redux
-  dispatch({
-    type: "ADD_TO_CART",
-    payload: cart,
-  });
-
-  message.success("Proceeding to checkout");
-
-  // redirect
-  navigate("/cart");
-};
-
-
-  const handleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
-    message.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+    navigate("/cart");
   };
 
- const handleRating = async (value) => {
-  try {
-    setRating(value);
+  // -----------------------------
+  // WISHLIST
+  // -----------------------------
+  const handleWishlist = () => {
+    setIsWishlisted(
+      !isWishlisted
+    );
 
-    // API call
-    await productStar(product._id, value, user.token);
+    message.success(
+      isWishlisted
+        ? "Removed from wishlist"
+        : "Added to wishlist"
+    );
+  };
 
-    message.success(`Thanks for rating ${value} stars!`);
-  } catch (error) {
-    console.log("Rating Error:", error);
-    message.error("Failed to submit rating");
-  }
-};
+  // -----------------------------
+  // RATING
+  // -----------------------------
+  const handleRating =
+    async (value) => {
+      try {
+        if (!user?.token) {
+          return message.error(
+            "Please login first"
+          );
+        }
 
-  const currentImage = images[selectedImage]?.url;
-  const mainImageSrc = currentImage ? getImageUrl(currentImage) : PLACEHOLDER_IMG;
-  const currentImageIndex = selectedImage + 1;
-  const totalImages = images.length;
-  const categoryName = category?.name || "Products";
+        if (!value) {
+          return message.error(
+            "Please select rating"
+          );
+        }
 
-  const discountedPrice = price - (price * discount / 100);
+        setRating(value);
+
+        await productStar(
+          product._id,
+          value,
+          user.token
+        );
+
+        message.success(
+          `Thanks for rating ${value} stars!`
+        );
+
+        window.location.reload();
+      } catch (error) {
+        console.log(
+          "Rating Error:",
+          error
+        );
+
+        message.error(
+          "Failed to submit rating"
+        );
+      }
+    };
+
+  // -----------------------------
+  // IMAGE DATA
+  // -----------------------------
+  const currentImage =
+    images[selectedImage]?.url;
+
+  const mainImageSrc =
+    currentImage
+      ? getImageUrl(currentImage)
+      : PLACEHOLDER_IMG;
+
+  const currentImageIndex =
+    selectedImage + 1;
+
+  const totalImages =
+    images.length;
+
+  const categoryName =
+    category?.name ||
+    "Products";
+
+  // -----------------------------
+  // PRICE CALCULATIONS
+  // -----------------------------
+  const discountedPrice =
+    price -
+    (price * discount) / 100;
 
   const averageRating =
     ratings.length > 0
-      ? ratings.reduce((acc, curr) => acc + curr.star, 0) /
-        ratings.length
+      ? ratings.reduce(
+          (acc, curr) =>
+            acc + curr.star,
+          0
+        ) / ratings.length
       : 0;
 
-  const totalRatings = ratings.length;
+  const totalRatings =
+    ratings.length;
 
   return (
     <div className="single-product-page">
       <Row gutter={[24, 24]}>
-        {/* Left Column - Images */}
+        {/* LEFT SIDE */}
         <Col xs={24} lg={11}>
           <div className="product-image-section">
             <div className="main-image-container">
-              {/* Badges */}
+              {/* BADGES */}
               <div className="product-badges">
-                {discount > 0 && <Tag color="red" className="discount-badge">{discount}% OFF</Tag>}
-                {isOutOfStock && <Tag color="default" className="stock-badge">OUT OF STOCK</Tag>}
+                {discount > 0 && (
+                  <Tag
+                    color="red"
+                    className="discount-badge"
+                  >
+                    {discount}% OFF
+                  </Tag>
+                )}
+
+                {isOutOfStock && (
+                  <Tag
+                    color="default"
+                    className="stock-badge"
+                  >
+                    OUT OF STOCK
+                  </Tag>
+                )}
               </div>
 
-              {/* Navigation Arrows */}
+              {/* IMAGE NAVIGATION */}
               {hasMultipleImages && (
                 <>
-                  <Button type="text" icon={<LeftOutlined />} className="image-nav-btn prev-btn" onClick={handlePrevImage} />
-                  <Button type="text" icon={<RightOutlined />} className="image-nav-btn next-btn" onClick={handleNextImage} />
+                  <Button
+                    type="text"
+                    icon={
+                      <LeftOutlined />
+                    }
+                    className="image-nav-btn prev-btn"
+                    onClick={
+                      handlePrevImage
+                    }
+                  />
+
+                  <Button
+                    type="text"
+                    icon={
+                      <RightOutlined />
+                    }
+                    className="image-nav-btn next-btn"
+                    onClick={
+                      handleNextImage
+                    }
+                  />
                 </>
               )}
 
-              {/* Main Image */}
-              <img src={mainImageSrc} alt={title} className="main-product-image" onError={(e) => e.target.src = PLACEHOLDER_IMG} />
+              {/* MAIN IMAGE */}
+              <img
+                src={mainImageSrc}
+                alt={title || "Product"}
+                className="main-product-image"
+                onError={(e) => {
+                  e.target.src =
+                    PLACEHOLDER_IMG;
+                }}
+              />
             </div>
 
-            {/* Thumbnails */}
+            {/* THUMBNAILS */}
             <div className="thumbnail-section">
               {images.length > 0 ? (
-                images.map((img, index) => (
-                  <div key={index} className={`thumbnail ${selectedImage === index ? "active" : ""}`} onClick={() => setSelectedImage(index)}>
-                    <img src={getImageUrl(img.url)} alt={`Thumbnail ${index + 1}`} onError={(e) => e.target.src = PLACEHOLDER_THUMB} />
-                  </div>
-                ))
+                images.map(
+                  (
+                    img,
+                    index
+                  ) => (
+                    <div
+                      key={index}
+                      className={`thumbnail ${
+                        selectedImage ===
+                        index
+                          ? "active"
+                          : ""
+                      }`}
+                      onClick={() =>
+                        setSelectedImage(
+                          index
+                        )
+                      }
+                    >
+                      <img
+                        src={getImageUrl(
+                          img.url
+                        )}
+                        alt={`Thumbnail ${
+                          index + 1
+                        }`}
+                        onError={(
+                          e
+                        ) => {
+                          e.target.src =
+                            PLACEHOLDER_THUMB;
+                        }}
+                      />
+                    </div>
+                  )
+                )
               ) : (
-                <div className="thumbnail active"><img src={PLACEHOLDER_THUMB} alt="No Image" /></div>
+                <div className="thumbnail active">
+                  <img
+                    src={
+                      PLACEHOLDER_THUMB
+                    }
+                    alt="No Image"
+                  />
+                </div>
               )}
 
-              {hasMultipleImages && <div className="image-counter">{currentImageIndex} / {totalImages}</div>}
+              {hasMultipleImages && (
+                <div className="image-counter">
+                  {
+                    currentImageIndex
+                  }{" "}
+                  / {totalImages}
+                </div>
+              )}
             </div>
 
-            {/* Action Buttons */}
+            {/* ACTION BUTTONS */}
             <div className="action-buttons">
-              <Tooltip title={tootlTip}>
-                <Button type="primary" size="large" icon={
-                  <ShoppingCartOutlined />
-                  } block disabled={isOutOfStock} 
-                    onClick={handleAddToCart} 
-                    className="add-to-cart-btn">
-                      ADD TO CART
+              <Tooltip
+                title={toolTip}
+              >
+                <Button
+                  type="primary"
+                  size="large"
+                  icon={
+                    <ShoppingCartOutlined />
+                  }
+                  block
+                  disabled={
+                    isOutOfStock
+                  }
+                  onClick={
+                    handleAddToCart
+                  }
+                  className="add-to-cart-btn"
+                >
+                  ADD TO CART
                 </Button>
               </Tooltip>
-              <Button type="default" size="large" icon={isWishlisted ? <HeartFilled /> : <HeartOutlined />} onClick={handleWishlist} className={`wishlist-btn ${isWishlisted ? "wishlisted" : ""}`}>{isWishlisted ? "WISHLISTED" : "WISHLIST"}</Button>
+
+              <Button
+                type="default"
+                size="large"
+                icon={
+                  isWishlisted ? (
+                    <HeartFilled />
+                  ) : (
+                    <HeartOutlined />
+                  )
+                }
+                onClick={
+                  handleWishlist
+                }
+                className={`wishlist-btn ${
+                  isWishlisted
+                    ? "wishlisted"
+                    : ""
+                }`}
+              >
+                {isWishlisted
+                  ? "WISHLISTED"
+                  : "WISHLIST"}
+              </Button>
             </div>
 
-            {/* Product Tabs */}
-            <Tabs defaultActiveKey="specs" className="product-tabs">
-              <Tabs.TabPane tab="Specifications" key="specs">
+            {/* TABS */}
+            <Tabs
+              defaultActiveKey="specs"
+              className="product-tabs"
+            >
+              <TabPane
+                tab="Specifications"
+                key="specs"
+              >
                 <div className="tab-content">
-                  <h3 className="section-title">Available Offers</h3>
-                    <ul className="offers-list">
-                      <li><Tag color="green">Bank Offer</Tag><span>5% Unlimited Cashback on Axis Bank Credit Card</span></li>
-                      <li><Tag color="green">Bank Offer</Tag><span>Starting ₹1,594/month with No Cost EMI</span></li>
-                      <li><Tag color="green">Special Price</Tag><span>Get extra ₹{Math.round(price * 0.1)} off</span></li>
-                      <li><Tag color="orange">Partner Offer</Tag><span>Buy 2 save 5% | Buy 3+ save 10%</span></li>
-                    </ul>
+                  <h3 className="section-title">
+                    Available Offers
+                  </h3>
+
+                  <ul className="offers-list">
+                    <li>
+                      <Tag color="green">
+                        Bank Offer
+                      </Tag>
+
+                      <span>
+                        5% Unlimited
+                        Cashback on Axis
+                        Bank Credit Card
+                      </span>
+                    </li>
+
+                    <li>
+                      <Tag color="green">
+                        Bank Offer
+                      </Tag>
+
+                      <span>
+                        Starting
+                        ₹1,594/month with
+                        No Cost EMI
+                      </span>
+                    </li>
+
+                    <li>
+                      <Tag color="green">
+                        Special Price
+                      </Tag>
+
+                      <span>
+                        Get extra ₹
+                        {Math.round(
+                          price * 0.1
+                        )}{" "}
+                        off
+                      </span>
+                    </li>
+                  </ul>
                 </div>
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Product Description" key="desc">
+              </TabPane>
+
+              <TabPane
+                tab="Description"
+                key="desc"
+              >
                 <div className="tab-content">
-                  <p className="product-description">{description || "No description available."}</p>
+                  <p className="product-description">
+                    {description ||
+                      "No description available."}
+                  </p>
                 </div>
-              </Tabs.TabPane>
+              </TabPane>
             </Tabs>
           </div>
         </Col>
 
-        {/* Right Column - Product Details */}
+        {/* RIGHT SIDE */}
         <Col xs={24} lg={13}>
           <div className="product-details-section">
-            {/* Breadcrumb */}
+            {/* BREADCRUMB */}
             <div className="product-breadcrumb">
-              <span>Home</span> <ArrowRightOutlined /> <span>{categoryName}</span> <ArrowRightOutlined /> <span>{title}</span>
+              <span>Home</span>
+
+              <ArrowRightOutlined />
+
+              <span>
+                {categoryName}
+              </span>
+
+              <ArrowRightOutlined />
+
+              <span>{title}</span>
             </div>
 
-            {/* Title */}
-            <h1 className="product-title">{title}</h1>
+            {/* TITLE */}
+            <h1 className="product-title">
+              {title}
+            </h1>
 
-            {/* Brand */}
+            {/* BRAND */}
             <div className="product-meta">
-              <span className="brand-tag">{brand}</span>
+              <span className="brand-tag">
+                {brand}
+              </span>
             </div>
 
-            {/* Price Section */}
+            {/* PRICE */}
             <div className="price-section">
-              <span className="current-price">₹{discountedPrice.toFixed(2)}</span>
+              <span className="current-price">
+                ₹
+                {discountedPrice.toFixed(
+                  2
+                )}
+              </span>
+
               {discount > 0 && (
                 <>
-                  <span className="original-price">₹{price.toFixed(2)}</span>
-                  <span className="discount-text">{discount}% off</span>
+                  <span className="original-price">
+                    ₹
+                    {price.toFixed(
+                      2
+                    )}
+                  </span>
+
+                  <span className="discount-text">
+                    {discount}% off
+                  </span>
                 </>
               )}
             </div>
 
-            {/* Leave Rating Section */}
+            {/* RATINGS */}
             <div className="leave-rating-section">
-             <div className="rating-display">
-                <Rate disabled value={averageRating} allowHalf />
+              <div className="rating-display">
+                <Rate
+                  disabled
+                  value={
+                    averageRating
+                  }
+                  allowHalf
+                />
 
                 <span className="rating-value">
-                  {averageRating.toFixed(1)}
+                  {averageRating.toFixed(
+                    1
+                  )}
                 </span>
 
                 <span className="rating-count">
-                  ({totalRatings} ratings)
+                  (
+                  {totalRatings}{" "}
+                  ratings)
                 </span>
               </div>
 
               {!isLoggedIn ? (
-                // Not logged in - prompt to login
                 <Popover
                   content={
                     <div className="rating-popover">
-                      <p className="rating-title">Please login to rate</p>
-                      <p className="rating-subtitle">Login or register to rate this product</p>
-                      <div className="rating-actions">
-                        <Button size="small" onClick={() => message.info("Cancelled")}>Cancel</Button>
-                        <Button type="primary" size="small" onClick={() => navigate("/login")}>Login</Button>
-                      </div>
+                      <p className="rating-title">
+                        Please login to
+                        rate
+                      </p>
+
+                      <Button
+                        type="primary"
+                        size="small"
+                        onClick={() =>
+                          navigate(
+                            "/login"
+                          )
+                        }
+                      >
+                        Login
+                      </Button>
                     </div>
                   }
                   trigger="click"
-                  placement="bottom"
                 >
-                  <Button type="default" className="leave-rating-btn">
-                    <StarOutlined /> Leave a Rating
+                  <Button>
+                    <StarOutlined />{" "}
+                    Leave a Rating
                   </Button>
                 </Popover>
               ) : hasUserRated ? (
-                // Logged in but already rated
                 <div className="already-rated">
-                  <StarFilled className="rated-icon" /> You rated this product
+                  <StarFilled className="rated-icon" />{" "}
+                  You rated this
+                  product
                 </div>
               ) : (
-                // Logged in and haven't rated yet
                 <Popover
                   content={
                     <div className="rating-popover">
-                      <p className="rating-title">Rate this product</p>
-                      <Rate onChange={handleRating} value={rating} allowHalf />
-                      <div className="rating-actions">
-                        <Button size="small" onClick={() => {
-                          setRating(0);
-                          message.info("Rating cancelled");
-                        }}>Cancel</Button>
-                       <Button
-                            type="primary"
-                            size="small"
-                            onClick={async () => {
-                              try {
-                                await productStar(product._id, rating, user.token);
+                      <p className="rating-title">
+                        Rate this product
+                      </p>
 
-                                message.success(`Thanks for rating ${rating} stars!`);
-
-                                window.location.reload();
-                              } catch (error) {
-                                console.log(error);
-                                message.error("Rating failed");
-                              }
-                            }}
-                          >
-                            Submit
-                        </Button>
-                      </div>
+                      <Rate
+                        onChange={
+                          handleRating
+                        }
+                        value={rating}
+                        allowHalf
+                      />
                     </div>
                   }
                   trigger="click"
-                  placement="bottom"
                 >
-                  <Button type="default" className="leave-rating-btn">
-                    <StarOutlined /> Leave a Rating
+                  <Button>
+                    <StarOutlined />{" "}
+                    Leave a Rating
                   </Button>
                 </Popover>
               )}
@@ -396,113 +734,118 @@ const handleBuyNow = () => {
 
             <Divider />
 
-            {/* Product Information */}
+            {/* PRODUCT INFO */}
             <div className="product-info-section">
-              <h3 className="info-title">Product Information</h3>
+              <h3 className="info-title">
+                Product Information
+              </h3>
 
               <div className="info-row">
-                <span className="info-label">Brand:</span>
-                <span className="info-value">{brand}</span>
-              </div>
+                <span className="info-label">
+                  Brand:
+                </span>
 
-              <div className="info-row">
-                <span className="info-label">Color:</span>
-                <span className="info-value">{color}</span>
-              </div>
-
-              <div className="info-row">
-                <span className="info-label">Category:</span>
                 <span className="info-value">
-                  {category?.name || "N/A"}
+                  {brand}
                 </span>
               </div>
 
               <div className="info-row">
-                <span className="info-label">Availability:</span>
+                <span className="info-label">
+                  Color:
+                </span>
+
+                <span className="info-value">
+                  {color}
+                </span>
+              </div>
+
+              <div className="info-row">
+                <span className="info-label">
+                  Availability:
+                </span>
+
                 <span
                   className={`info-value ${
-                    stock > 0 ? "in-stock" : "out-stock"
+                    stock > 0
+                      ? "in-stock"
+                      : "out-stock"
                   }`}
                 >
-                  {stock > 0 ? "In Stock" : "Out of Stock"}
+                  {stock > 0
+                    ? "In Stock"
+                    : "Out of Stock"}
                 </span>
               </div>
-
-              <div className="info-row">
-                <span className="info-label">Items Left:</span>
-                <span className="info-value">{stock}</span>
-              </div>
-
-              {subs && subs.length > 0 && (
-                <div className="info-row">
-                  <span className="info-label">Sub Categories:</span>
-
-                  <div className="sub-tags">
-                    {subs.map((s) => (
-                      <Tag color="blue" key={s._id}>
-                        {s.name}
-                      </Tag>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
             <Divider />
 
-            {/* Delivery Options */}
-            <div className="delivery-section">
-              <div className="delivery-option">
-                <TruckOutlined className="delivery-icon" />
-                <div className="delivery-info">
-                  <span className="delivery-title">Free Delivery</span>
-                  <span className="delivery-details">Delivery in 3-5 business days</span>
-                </div>
-              </div>
-              <div className="delivery-option">
-                <CheckCircleOutlined className="delivery-icon" />
-                <div className="delivery-info">
-                  <span className="delivery-title">Warranty</span>
-                  <span className="delivery-details">1 Year Manufacturer Warranty</span>
-                </div>
-              </div>
-            </div>
-
-            <Divider />
-
-          
-
-            {/* Quantity Selector */}
+            {/* QUANTITY */}
             <div className="quantity-section">
-              <span className="quantity-label">Quantity:</span>
-              <InputNumber min={1} max={stock || 1} value={quantity} onChange={setQuantity} className="quantity-input" />
-              <span className="stock-info">{stock > 0 ? `${stock} available in stock` : "Out of stock"}</span>
+              <span className="quantity-label">
+                Quantity:
+              </span>
+
+              <InputNumber
+                min={1}
+                max={stock || 1}
+                value={quantity}
+                onChange={(value) =>
+                  setQuantity(
+                    value || 1
+                  )
+                }
+                className="quantity-input"
+              />
             </div>
 
-
-            {/* Buy Now Button */}
-            <Button type="primary" size="large" block disabled={isOutOfStock} onClick={handleBuyNow} className="buy-now-btn">BUY NOW</Button>
+            {/* BUY NOW */}
+            <Button
+              type="primary"
+              size="large"
+              block
+              disabled={
+                isOutOfStock
+              }
+              onClick={handleBuyNow}
+              className="buy-now-btn"
+            >
+              BUY NOW
+            </Button>
           </div>
         </Col>
       </Row>
 
-      {/* Related Products */}
+      {/* RELATED PRODUCTS */}
       {related.length > 0 && (
         <div className="related-products-section">
           <Divider />
-          <h2>Related Products</h2>
+
+          <h2>
+            Related Products
+          </h2>
 
           <Row gutter={[16, 16]}>
             {related.map((p) => (
-              <Col xs={24} sm={12} md={8} lg={6} key={p._id}>
-                <ProductCard product={p} getImageUrl={getImageUrl} />
+              <Col
+                xs={24}
+                sm={12}
+                md={8}
+                lg={6}
+                key={p._id}
+              >
+                <ProductCard
+                  product={p}
+                  getImageUrl={
+                    getImageUrl
+                  }
+                />
               </Col>
             ))}
           </Row>
         </div>
       )}
-
-
     </div>
   );
 };

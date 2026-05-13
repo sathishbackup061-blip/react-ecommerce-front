@@ -8,7 +8,6 @@ import {
   FaTicketAlt,
   FaLock,
   FaSignOutAlt,
-  FaUser,
 } from "react-icons/fa";
 
 const AdminNav = ({ onLogout }) => {

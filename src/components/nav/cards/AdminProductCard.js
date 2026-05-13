@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import {
   Card,
-  Button,
   Tooltip,
   Popconfirm,
-  Space,
 } from "antd";
 import {
   DeleteOutlined,

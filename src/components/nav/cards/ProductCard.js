@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Tag, Rate, Tooltip, Space, Badge ,message  } from "antd";
+import { Card, Button,  Rate, Tooltip, Space ,message  } from "antd";
 import {
   ShoppingCartOutlined,
   HeartOutlined,
@@ -22,10 +22,10 @@ const ProductCard = ({ product, getImageUrl }) => {
 
   const [tootlTip, setToolTip] = useState('Click to add');
 
-  const { title, description, price, images, slug, quantity, brand, color } = product;
+  const { title, description, price, images, slug, quantity } = product;
   const dispatch = useDispatch();
 
-  const {user, cart } = useSelector((state) => ({ ...state }));
+  const {user } = useSelector((state) => ({ ...state }));
 
   const imageUrl =
      product.images && product.images.length > 0
@@ -109,7 +109,6 @@ const ProductCard = ({ product, getImageUrl }) => {
       product.ratings.length
     : 0;
 
-const totalRatings = product.ratings ? product.ratings.length : 0;
 
   return (
     <div className="product-card-wrapper">

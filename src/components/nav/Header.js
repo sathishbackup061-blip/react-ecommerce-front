@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HomeOutlined, UserAddOutlined, UserOutlined, LogoutOutlined, UserCircleOutlined, ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserAddOutlined, UserOutlined, LogoutOutlined, ShoppingOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Avatar, Badge } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';

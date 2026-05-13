@@ -23,7 +23,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { userCart } from "../functions/user";
 
-import _ from "lodash";
+
 
 const { Title, Text } = Typography;
 

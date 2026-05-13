@@ -1,106 +1,172 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Input, Button, Card, Typography } from "antd";
+
+import {
+  Form,
+  Input,
+  Button,
+  Card,
+  Typography,
+} from "antd";
+
 import { MailOutlined } from "@ant-design/icons";
 
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import {
+  getAuth,
+  sendPasswordResetEmail,
+} from "firebase/auth";
+
 import { useSelector } from "react-redux";
+
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+
+import "react-toastify/dist/ReactToastify.css";
 
 const ForgotPassword = () => {
-    const [ loading, setLoading ] = useState(false);
-    const navigation = useNavigate();
-    const { user } = useSelector((state) => ({ ...state }));
+  const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        if (user && user.token) {
-            // If user is logged in and has a valid token, redirect to home page
-            navigation("/");
-        }
-    }, [user]);
+  const navigate = useNavigate();
 
-    const handleSubmit = async (values) => {
-        setLoading(true);
-        // Implement forgot password logic here
-        const config = {
-            url: process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT_URL || "http://localhost:3000/login",
-            handleCodeInApp: true,
-        };
-        try {
-            await sendPasswordResetEmail(getAuth(), values.email, config);
-            toast.success("Password reset email sent to " + values.email);
-        } catch (error) {
-            toast.error("Error sending password reset email: " + error.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const { user } = useSelector((state) => ({
+    ...state,
+  }));
 
-    return (
-        <div style={{ 
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100%'
-        }}>
-            <Card style={{ width: 400 }}>
-                <Typography.Title level={4} style={{ textAlign: 'center' }}>
-                    Forgot Password
-                </Typography.Title>
-                <Typography.Text>
-                    Enter your email address and we'll send you a link to reset your password.
-                </Typography.Text>
+  // ---------------- REDIRECT IF LOGGED IN ----------------
+  useEffect(() => {
+    if (user?.token) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
-                {loading ? 
-                    (
-                        <Typography.Text type="secondary" style={{ display: 'block', marginTop: 20 }}>
-                            Sending reset link...
-                        </Typography.Text>
-                    ) : (
-                        <Typography.Text type="secondary" style={{ display: 'block', marginTop: 20 }}>
-                            Forgot your password
-                        </Typography.Text>
-                    )
-                }
+  // ---------------- SUBMIT ----------------
+  const handleSubmit = async (values) => {
+    try {
+      setLoading(true);
 
-                <Form
-                    name="register"
-                    onFinish={handleSubmit}
-                    layout="vertical"
-                    autoComplete="off"
-                    >
-                    <Form.Item
-                        name="email"
-                        rules={[
-                            { required: true, message: 'Please input your email!' },
-                            { type: 'email', message: 'Please enter a valid email!' }
-                        ]}
-                    >
-                        <Input 
-                            prefix={<MailOutlined />}
-                            placeholder="Enter registered email" 
-                            size="large"
-                        />
-                    </Form.Item>
+      const config = {
+        url:
+          process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT_URL ||
+          "http://localhost:3000/login",
 
-                    <Form.Item>
-                        <Button 
-                            type="primary" 
-                            htmlType="submit" 
-                            loading={loading}
-                            block
-                            size="large"
-                           // disabled={!email}
-                        >
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </Form>
+        handleCodeInApp: true,
+      };
 
-            </Card>
-        </div>
-    );
+      await sendPasswordResetEmail(
+        getAuth(),
+        values.email,
+        config
+      );
+
+      toast.success(
+        `Password reset email sent to ${values.email}`
+      );
+    } catch (error) {
+      console.error("Reset password error:", error);
+
+      toast.error(
+        error?.message ||
+          "Failed to send password reset email"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        padding: "20px",
+      }}
+    >
+      <Card
+        style={{
+          width: "100%",
+          maxWidth: 400,
+          borderRadius: 12,
+          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Typography.Title
+          level={4}
+          style={{
+            textAlign: "center",
+            marginBottom: 8,
+          }}
+        >
+          Forgot Password
+        </Typography.Title>
+
+        <Typography.Text
+          type="secondary"
+          style={{
+            display: "block",
+            textAlign: "center",
+            marginBottom: 24,
+          }}
+        >
+          Enter your email address and we’ll send
+          you a link to reset your password.
+        </Typography.Text>
+
+        {loading && (
+          <Typography.Text
+            type="secondary"
+            style={{
+              display: "block",
+              marginBottom: 16,
+              textAlign: "center",
+            }}
+          >
+            Sending reset link...
+          </Typography.Text>
+        )}
+
+        <Form
+          name="forgot-password"
+          onFinish={handleSubmit}
+          layout="vertical"
+          autoComplete="off"
+        >
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+              {
+                type: "email",
+                message:
+                  "Please enter a valid email!",
+              },
+            ]}
+          >
+            <Input
+              prefix={<MailOutlined />}
+              placeholder="Enter registered email"
+              size="large"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              block
+              size="large"
+            >
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </div>
+  );
 };
 
 export default ForgotPassword;

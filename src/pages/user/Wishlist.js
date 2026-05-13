@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Card, Row, Col, Empty, Button, message } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
@@ -10,20 +10,24 @@ const Wishlist = () => {
 
   const [wishlist, setWishlist] = useState([]);
 
-  useEffect(() => {
-    loadWishlist();
-  }, []);
-
-  const loadWishlist = async () => {
+  // LOAD WISHLIST
+  const loadWishlist = useCallback(async () => {
     try {
+      if (!user?.token) return;
+
       const res = await getWishlist(user.token);
+
       setWishlist(res.data);
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [user]);
 
-  // ✅ FIXED IMAGE FUNCTION (IMPORTANT)
+  useEffect(() => {
+    loadWishlist();
+  }, [loadWishlist]);
+
+  // IMAGE HELPER
   const getImage = (p) => {
     if (!p?.images || p.images.length === 0) {
       return "https://via.placeholder.com/250?text=No+Image";
@@ -38,22 +42,29 @@ const Wishlist = () => {
     return `${process.env.REACT_APP_API}${img}`;
   };
 
+  // REMOVE ITEM
   const handleRemove = async (productId) => {
     try {
       await removeWishlist(productId, user.token);
+
       message.success("Removed from wishlist");
+
       loadWishlist();
     } catch (err) {
       console.log(err);
+
+      message.error("Failed to remove item");
     }
   };
 
   return (
     <Row gutter={24}>
+      {/* LEFT NAV */}
       <Col xs={24} md={5}>
         <UserNav />
       </Col>
 
+      {/* RIGHT CONTENT */}
       <Col xs={24} md={19} style={{ padding: 20 }}>
         <h2>❤️ My Wishlist</h2>
 
@@ -71,11 +82,13 @@ const Wishlist = () => {
                       src={getImage(p)}
                       style={{
                         objectFit: "cover",
+                        height: 250,
                       }}
                     />
                   }
                   actions={[
                     <Button
+                      key="remove"
                       danger
                       type="text"
                       icon={<DeleteOutlined />}
@@ -86,7 +99,9 @@ const Wishlist = () => {
                   ]}
                 >
                   <h4>{p.title}</h4>
+
                   <p>₹{p.price}</p>
+
                   <p>{p.brand}</p>
                 </Card>
               </Col>

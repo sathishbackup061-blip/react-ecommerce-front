@@ -1,7 +1,6 @@
 import React, { useState, useEffect} from "react";
 import { Button, Space } from "antd";
 import { getSubs } from "../../functions/sub";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const SubCategoryList = () => {
