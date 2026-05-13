@@ -402,7 +402,6 @@ const SingleProduct = ({
               {/* MAIN IMAGE */}
               <img
                 src={mainImageSrc}
-                alt={title || "Product"}
                 className="main-product-image"
                 onError={(e) => {
                   e.target.src =
