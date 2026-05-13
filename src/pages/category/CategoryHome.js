@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getProductsListCat, getImageUrl } from "../../functions/product";
+import { getImageUrl } from "../../functions/product";
 import { getCategory } from "../../functions/category";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 import ProductCard from "../../components/nav/cards/ProductCard";
-import { Row, Col, Checkbox, Slider, Button } from "antd";
-import CategoryList from "../../components/category/CategoryList";
+import { Row, Col } from "antd";
 
 const CategoryHome = () => {
   const [category, setCategory] = useState({});
@@ -33,6 +31,7 @@ const CategoryHome = () => {
       });
   }, [slug]);
 
+  console.log("Category:", category);
 
   return (
         <Row gutter={20} style={{ padding: 20 }}>

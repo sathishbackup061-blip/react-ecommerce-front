@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, Card, Typography, Spin } from "antd";
-import { UserAddOutlined, MailOutlined, LockOutlined, UserOutlined, GoogleOutlined } from "@ant-design/icons";
+import { MailOutlined, LockOutlined, UserOutlined, GoogleOutlined } from "@ant-design/icons";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";

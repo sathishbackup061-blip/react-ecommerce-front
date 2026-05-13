@@ -27,7 +27,6 @@ import {
   UploadOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons";
-import ProductList from "./ProductList";
 import "../AdminDesign.css";
 
 const initialState = {

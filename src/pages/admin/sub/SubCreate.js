@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom';
 import { Col, Row, Input, Table, Space, Button, Card, Empty, Tag, Tooltip, Popconfirm, Segmented, Badge } from "antd";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";

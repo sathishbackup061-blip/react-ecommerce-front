@@ -2,16 +2,14 @@ import React, { useState} from 'react';
 
 import UserNav from '../../components/nav/UserNav';
 import { Col, Row, Form, Input, Button, message } from 'antd';
-
-import { auth } from '../../firebase';
 import { updatePassword } from 'firebase/auth';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 
 
 
 const Password = () => {
-    const [password, setPassword] = useState('');
+   
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     

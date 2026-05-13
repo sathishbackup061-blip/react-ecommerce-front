@@ -41,6 +41,7 @@ const AdminDashboard = () => {
     try {
       setDeletingId(productSlug);
       console.log("🗑️ Deleting product:", productSlug);
+      console.log("Delete Id:", deletingId);
 
       await deleteProduct(productSlug, user?.token);
 

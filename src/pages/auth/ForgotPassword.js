@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button, Card, Typography } from "antd";
 import { MailOutlined } from "@ant-design/icons";
-import { auth } from "../../firebase";
 
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useSelector } from "react-redux";
@@ -10,9 +9,7 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const ForgotPassword = () => {
-    const [ email, setEmail ] = React.useState("");
-    const [ loading, setLoading ] = React.useState(false);
-    
+    const [ loading, setLoading ] = useState(false);
     const navigation = useNavigate();
     const { user } = useSelector((state) => ({ ...state }));
 

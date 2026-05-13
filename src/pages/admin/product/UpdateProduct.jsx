@@ -12,9 +12,6 @@ import {
   Upload,
   Spin,
   Divider,
-  Badge,
-  Space,
-  Modal,
 } from "antd";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -27,7 +24,6 @@ import {
   CloseOutlined,
   PlusOutlined,
   UploadOutlined,
-  AppstoreOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import "../AdminDesign.css";

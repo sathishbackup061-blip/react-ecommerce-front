@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -110,13 +113,11 @@ const Checkout = () => {
       console.log("ADDRESS RESPONSE:", res.data);
 
       if (res.data) {
-        // SAVE LOCALLY
         setSavedAddress({
           address,
           phone,
         });
 
-        // UPDATE REDUX USER
         dispatch({
           type: "LOGGED_IN_USER",
           payload: {
@@ -145,13 +146,10 @@ const Checkout = () => {
 
     applyCoupon(coupon, totalAmount, user.token)
       .then((res) => {
-       
-
         setDiscount(res.data.discount);
         setAppliedCoupon(coupon);
         setFinalTotal(res.data.finalTotal);
 
-        // SAVE TO LOCAL STORAGE
         localStorage.setItem(
           "discount",
           JSON.stringify(res.data.discount)
@@ -162,7 +160,6 @@ const Checkout = () => {
           JSON.stringify(res.data.finalTotal)
         );
 
-        // SAVE TO REDUX
         dispatch({
           type: "COUPON_APPLIED",
           payload: {
@@ -204,18 +201,6 @@ const Checkout = () => {
   };
 
   // -----------------------------------
-  // TOTAL CALCULATION
-  // -----------------------------------
-  const getTotal = () => {
-    const totalAmount = cart.cart.reduce(
-      (acc, item) => acc + item.price * item.count,
-      0
-    );
-
-    return totalAmount - (totalAmount * discount) / 100;
-  };
-
-  // -----------------------------------
   // GO PAYMENT PAGE
   // -----------------------------------
   const handlePlaceOrder = () => {
@@ -231,48 +216,48 @@ const Checkout = () => {
     navigate("/payment");
   };
 
-
+  // -----------------------------------
+  // COD ORDER
+  // -----------------------------------
   const handleCODOrder = async () => {
-  try {
-    const cartTotal = cart.cart.reduce(
-      (acc, item) => acc + item.price * item.count,
-      0
-    );
+    try {
+      const cartTotal = cart.cart.reduce(
+        (acc, item) => acc + item.price * item.count,
+        0
+      );
 
-    const totalAfterDiscount =
-      discount > 0
-        ? cartTotal - (cartTotal * discount) / 100
-        : cartTotal;
+      const totalAfterDiscount =
+        discount > 0
+          ? cartTotal - (cartTotal * discount) / 100
+          : cartTotal;
 
-    const orderRes = await createOrder(user.token, {
-      cart: cart.cart,
-      paymentMethod: "COD", // 👈 IMPORTANT
+      await createOrder(user.token, {
+        cart: cart.cart,
+        paymentMethod: "COD",
 
-      cartTotal,
-      discount,
-      discountAmount: (cartTotal * discount) / 100,
-      totalAfterDiscount,
+        cartTotal,
+        discount,
+        totalAfterDiscount,
 
-      address,
-      phone,
-    });
+        address,
+        phone,
+      });
 
-    dispatch({
-      type: "ADD_TO_CART",
-      payload: [],
-    });
+      dispatch({
+        type: "ADD_TO_CART",
+        payload: [],
+      });
 
-    localStorage.removeItem("cart");
+      localStorage.removeItem("cart");
 
-    message.success("Order placed (Cash on Delivery)");
+      message.success("Order placed (Cash on Delivery)");
 
-    navigate("/user/history");
-  } catch (err) {
-    console.log(err);
-    message.error("COD order failed");
-  }
-};
-
+      navigate("/user/history");
+    } catch (err) {
+      console.log(err);
+      message.error("COD order failed");
+    }
+  };
 
   // -----------------------------------
   // BLOCK RENDER IF NO USER
@@ -360,7 +345,6 @@ const Checkout = () => {
             boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
           }}
         >
-          {/* COUPON */}
           <Input
             placeholder="Enter coupon code"
             value={coupon}
@@ -390,7 +374,6 @@ const Checkout = () => {
 
           <Divider />
 
-          {/* PRODUCTS */}
           {products.map((item, index) => (
             <div key={index}>
               <Text strong>
@@ -419,7 +402,6 @@ const Checkout = () => {
             </div>
           ))}
 
-          {/* TOTAL */}
           <div
             style={{
               display: "flex",
@@ -448,8 +430,7 @@ const Checkout = () => {
               <Text type="success">
                 - ₹
                 {(
-                  (total * discount) /
-                  100
+                  (total * discount) / 100
                 ).toFixed(2)}
               </Text>
             </div>
@@ -481,14 +462,19 @@ const Checkout = () => {
             type="default"
             block
             size="large"
-            style={{ marginTop: 10, background: "#222", color: "#fff" }}
-            disabled={!savedAddress || cart.cart.length === 0}
+            style={{
+              marginTop: 10,
+              background: "#222",
+              color: "#fff",
+            }}
+            disabled={
+              !savedAddress ||
+              cart.cart.length === 0
+            }
             onClick={handleCODOrder}
           >
             Cash on Delivery (COD)
           </Button>
-
-
         </Card>
       </Col>
     </Row>
