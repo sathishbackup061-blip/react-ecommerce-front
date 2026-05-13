@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -28,7 +33,10 @@ import {
   StarFilled,
 } from "@ant-design/icons";
 
-import { useDispatch, useSelector } from "react-redux";
+import {
+  useDispatch,
+  useSelector,
+} from "react-redux";
 
 import _ from "lodash";
 
@@ -63,14 +71,18 @@ const SingleProduct = ({
     })
   );
 
-  const [selectedImage, setSelectedImage] =
-    useState(0);
+  const [
+    selectedImage,
+    setSelectedImage,
+  ] = useState(0);
 
   const [quantity, setQuantity] =
     useState(1);
 
-  const [isWishlisted, setIsWishlisted] =
-    useState(false);
+  const [
+    isWishlisted,
+    setIsWishlisted,
+  ] = useState(false);
 
   const [rating, setRating] =
     useState(0);
@@ -84,8 +96,8 @@ const SingleProduct = ({
   // -----------------------------
   // LOAD RELATED PRODUCTS
   // -----------------------------
-  const loadRelated = useCallback(
-    async () => {
+  const loadRelated =
+    useCallback(async () => {
       try {
         if (!product?._id) return;
 
@@ -101,9 +113,7 @@ const SingleProduct = ({
           error
         );
       }
-    },
-    [product]
-  );
+    }, [product]);
 
   useEffect(() => {
     loadRelated();
@@ -133,7 +143,6 @@ const SingleProduct = ({
     color = "N/A",
     images: productImages = [],
     category,
-    //subs = [],
     ratings = [],
   } = product;
 
@@ -402,6 +411,7 @@ const SingleProduct = ({
               {/* MAIN IMAGE */}
               <img
                 src={mainImageSrc}
+                alt={title || "Product"}
                 className="main-product-image"
                 onError={(e) => {
                   e.target.src =
@@ -436,7 +446,7 @@ const SingleProduct = ({
                         src={getImageUrl(
                           img.url
                         )}
-                        alt={`Thumbnail ${
+                        alt={`${title} thumbnail ${
                           index + 1
                         }`}
                         onError={(
@@ -455,7 +465,7 @@ const SingleProduct = ({
                     src={
                       PLACEHOLDER_THUMB
                     }
-                    alt="No Image"
+                    alt="No product available"
                   />
                 </div>
               )}
