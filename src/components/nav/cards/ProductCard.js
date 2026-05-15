@@ -30,7 +30,7 @@ const ProductCard = ({ product, getImageUrl }) => {
   const imageUrl =
      product.images && product.images.length > 0
       ? getImageUrl(images[0].url)
-      : "https://via.placeholder.com/250?text=No+Image";
+      : "/images/no-image.png";
 
 
 // const imageUrl =
@@ -133,7 +133,7 @@ const ProductCard = ({ product, getImageUrl }) => {
               className="product-image"
               onError={(e) => {
                 e.target.src =
-                  "https://via.placeholder.com/250?text=No+Image";
+                  "/images/no-image.png";
               }}
             />
             <div className="product-overlay">

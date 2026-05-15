@@ -50,10 +50,10 @@ import {
 import ProductCard from "./ProductCard";
 
 const PLACEHOLDER_IMG =
-  "https://via.placeholder.com/400?text=No+Image";
+  "/images/no-image.png";
 
 const PLACEHOLDER_THUMB =
-  "https://via.placeholder.com/80?text=No+Image";
+  "/images/no-image.png";
 
 const { TabPane } = Tabs;
 
