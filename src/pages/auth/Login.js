@@ -236,7 +236,7 @@ const Login = () => {
                             danger
                             htmlType="submit" 
                             shape="round"
-                            loading={loading}
+                          
                             block
                             size="large"
                             icon={<GoogleOutlined />}
