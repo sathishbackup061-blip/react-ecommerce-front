@@ -52,6 +52,7 @@ const AdminBanner = () => {
       const res = await getBanners();
 
       setBanners(res.data);
+
       console.log("BANNERS =>", res.data);
 
     } catch (err) {
@@ -142,10 +143,17 @@ const AdminBanner = () => {
   const columns = [
     {
       title: "Image",
-      dataIndex: "image",
-      render: (image) => (
+      dataIndex: "images",
+
+      render: (images) => (
         <img
-          src={image}
+          src={
+            images &&
+            images.length > 0 &&
+            images[0]
+              ? images[0]
+              : "https://via.placeholder.com/100x60?text=No+Image"
+          }
           alt="banner"
           style={{
             width: 100,
@@ -160,14 +168,18 @@ const AdminBanner = () => {
     {
       title: "Title",
       dataIndex: "title",
+
       render: (text) => (
-        <Tag color="blue">{text}</Tag>
+        <Tag color="blue">
+          {text}
+        </Tag>
       ),
     },
 
     {
       title: "Type",
       dataIndex: "type",
+
       render: (type) => (
         <Tag color={getTypeColor(type)}>
           {type.toUpperCase()}
@@ -180,14 +192,15 @@ const AdminBanner = () => {
       dataIndex: "subtitle",
     },
 
-    // {
-    //   title: "Link",
-    //   dataIndex: "link",
-    // },
+    {
+      title: "Link",
+      dataIndex: "link",
+    },
 
     {
       title: "Status",
       dataIndex: "active",
+
       render: (active) =>
         active ? (
           <Tag color="green">
@@ -202,6 +215,7 @@ const AdminBanner = () => {
 
     {
       title: "Action",
+
       render: (_, record) => (
         <Popconfirm
           title="Delete banner?"
@@ -224,7 +238,13 @@ const AdminBanner = () => {
   return (
     <Row gutter={[24, 24]}>
       {/* LEFT SIDEBAR */}
-      <Col xs={0} sm={0} md={4} lg={4} xl={4}>
+      <Col
+        xs={0}
+        sm={0}
+        md={4}
+        lg={4}
+        xl={4}
+      >
         <div
           style={{
             position: "sticky",
@@ -236,7 +256,13 @@ const AdminBanner = () => {
       </Col>
 
       {/* RIGHT CONTENT */}
-      <Col xs={24} sm={24} md={20} lg={20} xl={20}>
+      <Col
+        xs={24}
+        sm={24}
+        md={20}
+        lg={20}
+        xl={20}
+      >
         <div
           className="page-content"
           style={{
@@ -288,13 +314,16 @@ const AdminBanner = () => {
                 }
               />
 
+              {/* IMAGE URL */}
               <Input
                 placeholder="Banner Image URL"
-                value={form.image}
+                value={form.images[0]}
                 onChange={(e) =>
                   setForm({
                     ...form,
-                    image: e.target.value,
+                    images: [
+                      e.target.value,
+                    ],
                   })
                 }
               />
