@@ -17,8 +17,7 @@ const AdminNav = ({ onLogout }) => {
 
   const styles = {
     container: {
-      width: "280px",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      background: "linear-gradient(135deg, rgb(29 107 142) 0%, rgb(16 69 114) 100%)",
       padding: "30px 0",
       borderRadius: "12px",
       boxShadow: "0 8px 32px rgba(102, 126, 234, 0.2)",
@@ -27,9 +26,9 @@ const AdminNav = ({ onLogout }) => {
       top: "0",
     },
     header: {
-      padding: "20px 25px",
+      padding: "10px 10px",
       borderBottom: "2px solid rgba(255, 255, 255, 0.2)",
-      marginBottom: "20px",
+      marginBottom: "2px",
     },
     headerTitle: {
       color: "#fff",
@@ -55,7 +54,7 @@ const AdminNav = ({ onLogout }) => {
     link: {
       display: "flex",
       alignItems: "center",
-      padding: "15px 25px",
+      padding: "5px 10px",
       color: "rgba(255, 255, 255, 0.7)",
       textDecoration: "none",
       transition: "all 0.3s ease",
@@ -81,7 +80,7 @@ const AdminNav = ({ onLogout }) => {
       textAlign: "center",
     },
     sectionTitle: {
-      padding: "20px 25px 10px",
+      padding: "10px 10px 10px",
       color: "rgba(255, 255, 255, 0.5)",
       fontSize: "12px",
       fontWeight: "bold",
@@ -157,6 +156,21 @@ const AdminNav = ({ onLogout }) => {
       </ul>
 
       <div style={styles.divider}></div>
+
+         {/* Banner Section */}
+      <div style={styles.sectionTitle}>Banner</div>
+      <ul style={styles.navList}>
+        <NavLink
+          to="/admin/add-banner"
+          icon={FaTachometerAlt}
+          label="Add Banner"
+          path="/admin/add-banner"
+        />
+      </ul>
+
+      <div style={styles.divider}></div>
+
+
 
       {/* Products Section */}
       <div style={styles.sectionTitle}>Products</div>

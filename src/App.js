@@ -69,6 +69,10 @@ const AdminCoupon = lazy(() =>
   import("./pages/admin/coupon/AdminCoupon")
 );
 
+const HomeBanner = lazy(() =>
+  import("./pages/admin/banner/HomeBanner")
+);
+
 // SHOP
 const Product = lazy(() => import("./pages/Product"));
 const Shop = lazy(() => import("./pages/Shop"));
@@ -273,6 +277,15 @@ const App = () => {
             element={
               <AdminRoute>
                 <AdminCoupon />
+              </AdminRoute>
+            }
+          />
+
+           <Route
+            path="/admin/add-banner"
+            element={
+              <AdminRoute>
+                <HomeBanner />
               </AdminRoute>
             }
           />

@@ -34,7 +34,7 @@ const SearchProduct = () => {
         onChange={handleChange}
         onSearch={handleSubmit}
         enterButton
-        style={{ width: 250 }}
+        style={{ width: 250,  marginTop: 7 }}
       />
     </div>
   );

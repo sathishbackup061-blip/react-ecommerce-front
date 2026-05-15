@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Carousel,
   Card,
   Row,
   Col,
@@ -11,7 +10,6 @@ import {
 } from "antd";
 
 import {
-  ShoppingCartOutlined,
   ProductOutlined,
 } from "@ant-design/icons";
 
@@ -20,7 +18,7 @@ import {
 } from "../functions/product";
 
 import { getCategories } from "../functions/category";
-
+import HomeBanner from "../components/carousel/HomeBanner";
 import CategoryList from "../components/category/CategoryList";
 import SubCategoryList from "../components/category/SubCategoryList";
 
@@ -75,83 +73,12 @@ const Home = () => {
     }
   };
 
-  // ---------------- CAROUSEL DATA ----------------
-  const carouselImages = [
-    {
-      id: 1,
-      image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&h=400&fit=crop",
-      title: "Latest Laptops",
-      description:
-        "Discover the newest and most powerful laptops",
-    },
 
-    {
-      id: 2,
-      image:
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&h=400&fit=crop",
-      title: "Premium Electronics",
-      description:
-        "High-quality electronics at the best prices",
-    },
-
-    {
-      id: 3,
-      image:
-        "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1200&h=400&fit=crop",
-      title: "Tech Gadgets",
-      description:
-        "Cutting-edge technology for your lifestyle",
-    },
-  ];
 
   return (
     <div className="home-page">
       {/* HERO CAROUSEL */}
-      <div className="hero-section">
-        <Carousel
-          autoplay
-          effect="fade"
-          autoplaySpeed={4000}
-          className="hero-carousel"
-        >
-          {carouselImages.map((item) => (
-            <div
-              key={item.id}
-              className="carousel-slide"
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="carousel-image"
-              />
-
-              <div className="carousel-overlay">
-                <div className="carousel-content">
-                  <h2 className="carousel-title">
-                    {item.title}
-                  </h2>
-
-                  <p className="carousel-description">
-                    {item.description}
-                  </p>
-
-                  <Button
-                    type="primary"
-                    size="large"
-                    icon={
-                      <ShoppingCartOutlined />
-                    }
-                    className="carousel-button"
-                  >
-                    Shop Now
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </Carousel>
-      </div>
+      <HomeBanner />
 
       {/* STATISTICS */}
       <div className="stats-section">
